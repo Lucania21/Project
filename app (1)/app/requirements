@@ -1,0 +1,8 @@
+openai
+requests
+numpy
+pandas
+sqlalchemy
+flask
+python-docx
+python-pptx
