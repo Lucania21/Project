@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proj5.0 - Quiz</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .quiz-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .flashcard {
+      width: 80%;
+      max-width: 600px;
+      background-color: #e0f2fe; /* Light blue background */
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 25px; /* Increased padding */
+      margin-bottom: 20px;
+      font-size: 1.2rem; /* Larger font size */
+    }
+
+    .flashcard h5 {
+      margin-bottom: 15px;
+      font-weight: bold; /* Bold question text */
+      text-align: center; /* Center-aligned question */
+    }
+
+    .flashcard button {
+      margin: 5px;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center; /* Center options horizontally */
+    }
+
+    .option-button {
+      flex: 1 1 auto;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .option-button.selected {
+      background-color: #f0f0f0;
+    }
+
+    /* Additional styles for answer button colors */
+    .option-button:nth-child(1) { background-color: #ffc107; } /* Light orange */
+    .option-button:nth-child(2) { background-color: #4caf50; } /* Green */
+    .option-button:nth-child(3) { background-color: #3f51b5; } /* Light blue */
+    .option-button:nth-child(4) { background-color: #ff9800; } /* Dark orange */
+    .option-button:nth-child(n+5) { background-color: #9c27b0; } /* Violet */
+
+    /* Adjust these styles if you have a different number of answer options */
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="color: black;">
+  <div class="container quiz-container">
+    <h1 class="mb-4">Quiz: {{ quiz_name }}</h1>
+    <div id="flashcard-container">
+      </div>
+    <button class="btn btn-primary" id="submit-quiz" style="display: none;" onclick="submitQuiz()">Submit Quiz</button>
+  </div>
+
+  <script>
+    const quizData = {{ quiz_data|safe }};
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+
+    function loadQuestion() {
+      if (currentQuestionIndex >= quizData.length) {
+        document.getElementById('submit-quiz').style.display = 'block';
+        return;
+      }
+
+      const flashcardContainer = document.getElementById('flashcard-container');
+      flashcardContainer.innerHTML = '';
+
+      const questionData = quizData[currentQuestionIndex];
+
+      const flashcard = document.createElement('div');
+      flashcard.classList.add('flashcard');
+
+      const questionTitle = document.createElement('h5');
+      questionTitle.textContent = questionData.question;
+      flashcard.appendChild(questionTitle);
+
+      const optionsContainer = document.createElement('div');
+      optionsContainer.classList.add('options');
+      const options = [...questionData.wrong_option, questionData.answer].sort(() => Math.random() - 0.5);
+      options.forEach(option => {
+        const optionButton = document.createElement('button');
+        optionButton.classList.add('option-button');
+        optionButton.textContent = option;
+        optionButton.onclick = () => checkAnswer(option);
+        optionsContainer.appendChild(optionButton);
+      });
+
+      flashcard.appendChild(optionsContainer);
+      flashcardContainer.appendChild(flashcard);
+    }
+
+    function checkAnswer(selectedOption) {
+      const questionData = quizData[currentQuestionIndex];
+      if (selectedOption === questionData.answer) {
+        score++;
+      }
+      userAnswers.push({ question: questionData.question, selected: selectedOption, correct: questionData.answer });
+      currentQuestionIndex++;
+      loadQuestion();
+    }
+
+    function submitQuiz() {
+      const resultContainer = document.getElementById('flashcard-container');
+      resultContainer.innerHTML = `
+        <h3>Your Score: ${score}/${quizData.length}</h3>
+        <button class="btn btn-secondary" onclick="location.reload()">Retake Quiz</button>
+      `;
+
+      userAnswers.forEach(answer => {
+        const resultDiv = document.createElement('div');
+        resultDiv.classList.add('flashcard');
+
+        const questionTitle = document.createElement('h5');
+        questionTitle.textContent = answer.question;
+        resultDiv.appendChild(questionTitle);
+
+        const selectedAnswer = document.createElement('p');
+        selectedAnswer.textContent = `Your Answer: ${answer.selected}`;
+        selectedAnswer.style.color = answer.selected === answer.correct ? 'green' : 'red';
+        resultDiv.appendChild(selectedAnswer);
+
+        const correctAnswer = document.createElement('p');
+        correctAnswer.textContent = `Correct Answer: ${answer.correct}`;
+        correctAnswer.style.color = 'green'; // Display correct answer in green
+        resultDiv.appendChild(correctAnswer);
+
+        resultContainer.appendChild(resultDiv);
+      });
+
+      document.getElementById('submit-quiz').style.display = 'none';
+    }
+
+    // Initialize the quiz
+    loadQuestion();
+  </script>
+</body>
+</html>

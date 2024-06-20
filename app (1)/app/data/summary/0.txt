@@ -1,0 +1,35 @@
+- Methodology for developing and evaluating an AI-powered summarization app for students.
+- Preamble: Develop a web app using AI summarization to manage student workload.
+- System Requirements Analysis: Identifying and analyzing app requirements.
+- Stakeholder Identification and Analysis:
+  - Students: Efficient workload management, understanding key concepts, task prioritization.
+  - Instructors: Enhance student learning and engagement, secure material sharing.
+  - Developers: Clear requirements and resource access.
+- User Requirements Elicitation:
+  - Techniques: User interviews, student surveys.
+  - Focus: Understand current workload management practices, identify pain points and desired functionalities.
+- System Functional and Non-Functional Requirements:
+  - Functional: Upload materials, generate summaries, generate mini summaries and quizzes, text-to-speech, save/organize summaries, generate quizzes/flashcards, share summaries.
+  - Non-Functional: Intuitive UI, efficient on various devices, fast/reliable summarization, secure user data.
+- System Design: Translating requirements into a technical blueprint.
+- System Architecture Overview:
+  - Client-Side: User interactions, display summaries, basic data processing.
+  - Server-Side: AI summarization model, data storage.
+  - Communication: Secure API for data exchange.
+- Data Model Design:
+  - Entities: Users, Workload Materials, Summaries, Quiz.
+  - Relationships: Users upload materials, materials have multiple summaries.
+- User Interface Design:
+  - Prioritize user experience and ease of use.
+  - Clear layout, core functionalities, customization options.
+- AI Model Integration Strategy:
+  - Transformer-based AI summarization model via API.
+  - Client-side: Pre-process uploads before server-side processing.
+  - Server-side: Interaction with AI model to generate summaries, send back to client.
+- Evaluation Criteria Definition: Measuring app success.
+- Metrics: ROUGE score for AI performance, user satisfaction surveys, task completion time for usability.
+- Evaluation Methods: User study with pre-study survey, baseline performance, app usage, post-study survey.
+- Ethical and Legal Considerations: Addressing ethical and legal implications.
+- Ethical Guidelines Compliance: Transparency, fairness, accountability.
+- Privacy and Data Protection: Data anonymization, informed consent, secure storage.
+- Conclusion: Systematic analysis of needs, design, evaluation, ethical guidelines, and data protection for creating a responsible, user-centric app.

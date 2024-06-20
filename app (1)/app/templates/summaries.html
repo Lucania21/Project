@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proj5.0 - Summaries</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .summary-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            color: #343a40;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .btn-view {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .btn-view:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Proj5.0</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="files">Files</a>
+                        <a class="dropdown-item" href="summaries">Summaries</a>
+                        <a class="dropdown-item" href="quizzes">Quizzes</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="donate">Donate</a></li>
+                <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="mt-4 mb-4">Summaries</h1>
+        <div class="row">
+            <!-- Example Summary Card -->
+            {% for summary in summaries %}
+                <div class="col-md-4 mb-4">
+                    <div class="card file-box" onclick="location.href = 'summary/{{summary.id}}'">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color:rgb(7, 7, 7);">{{summary.name}}</h5>
+                            <p class="card-text" style="color:rgb(7, 7, 7);">Owner: {{summary.user}}</p>
+                            <p class="card-text" style="color:rgb(7, 7, 7);">Date Created: {{summary.date}}</p>
+                            <button class="btn delete-button" onclick="deleteSummary(event, '{{summary.id}}')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            <!-- Add more summary cards here -->
+        </div>
+    </div>
+    <p><br><br></p>
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        &copy; 2024 Proj5.0. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap and custom JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function deleteSummary(event, summaryId) {
+            event.stopPropagation();  // Prevent the parent click event from triggering
+            fetch(`deleteSummary/${summaryId}`, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log('Summary deleted:', data);
+                // Optionally, refresh the summary list or remove the deleted summary from the DOM
+            })
+            .catch(error => {
+                console.error('Error deleting summary:', error);
+            });
+        }
+
+        function viewSummary(summaryId) {
+            // Replace this with the actual logic to view the summary details
+            console.log('Viewing summary:', summaryId);
+            // You can redirect to a summary details page or open a modal with summary details
+        }
+    </script>
+</body>
+</html>

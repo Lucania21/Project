@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("background.png"); /* Light blue background */
+    color: #fff;
+
+}
+
+.navbar {
+    border-bottom: 1px solid #add8e6; /* Light blue border */
+}
+
+.navbar-brand {
+    color: #007bff !important; /* Blue logo text */
+}
+
+.file-box {
+    background-color: #fffacd; /* Light yellow background */
+    border: 1px solid #add8e6; /* Light blue border */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.file-box:hover {
+    background-color: #ffeb3b; /* Deeper yellow on hover */
+}
+
+.upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #add8e6; /* Light blue background */
+    border: 2px dashed #007bff; /* Blue dashed border */
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-box:hover {
+    background-color: #87cefa; /* Lighter blue on hover */
+}
+
+.delete-button {
+    background-color: #ff4d4d; /* Red background */
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button:hover {
+    background-color: #ff0000; /* Darker red on hover */
+}
+
+footer {
+    background-color: #343a40; /* Dark background */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

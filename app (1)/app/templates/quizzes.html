@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proj5.0 - Quizzes</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #d0e7f9; /* Light blue color */
+            padding-top: 60px;
+            overflow-y: auto;
+            border-right: 1px solid #e9ecef;
+            color:rgb(7, 7, 7);
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .quiz-card {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: none;
+        }
+        .toggle-btn {
+            position: absolute;
+            top: 70px;
+            left: 260px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Proj5.0</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="files">Files</a>
+                        <a class="dropdown-item" href="summaries">Summaries</a>
+                        <a class="dropdown-item" href="quizzes">Quizzes</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/donate">Donate</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="sidebar">
+        {% for quiz in quiz_list %}
+        <div class="quiz-card" onclick="loadQuiz('{{ url_for('quiz', quiz_id=quiz.id) }}')">
+            <h5>{{ quiz.name }}</h5>
+            <p>ID: {{ quiz.id }}</p>
+            <p>Date: {{ quiz.created_date }}</p>
+            <p>Questions: {{ quiz.num_questions }}</p>
+            <p>Type: {{ quiz.type }}</p>
+            <button class="btn btn-danger btn-sm" onclick="deleteQuiz('{{ quiz.id }}'); event.stopPropagation();">Delete</button>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="content">
+        <h1>Quizzes Overview</h1>
+        <p>Select a quiz from the sidebar to view or edit.</p>
+        <iframe id="quiz-frame" src=""></iframe>
+    </div>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">...</button>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            const toggleBtn = document.querySelector('.toggle-btn');
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+                content.style.marginLeft = '250px';
+                toggleBtn.style.left = '260px';
+            } else {
+                sidebar.style.display = 'none';
+                content.style.marginLeft = '0';
+                toggleBtn.style.left = '10px';
+            }
+        }
+
+        function loadQuiz(url) {
+            const iframe = document.getElementById('quiz-frame');
+            iframe.style.display = 'block';
+            iframe.src = url;
+        }
+
+        function deleteQuiz(quizId) {
+            fetch(`/delete_quiz/${quizId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting quiz:', error);
+            });
+        }
+    </script>
+</body>
+</html>

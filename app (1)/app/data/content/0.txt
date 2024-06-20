@@ -1,0 +1,77 @@
+Chapter 3: Research Methodology - System Analysis and Design
+This chapter outlines the methodology for developing and evaluating an AI-powered summarization app designed to help students manage their workload. It follows a System Analysis and Design (SAD) approach.
+3.1. Preamble
+This research project aims to develop a web application that utilizes AI summarization to assist students in managing their workload. This chapter details the System Analysis and Design (SAD) methodology employed to create a user-centric and effective app. The SAD approach ensures the app meets the needs of its stakeholders while effectively integrating AI technology.
+3.2. System Requirements Analysis
+This phase identifies and analyzes the requirements for the app.
+3.2.1. Stakeholder Identification and Analysis
+Stakeholders: Students (primary), Instructors (supportive), Developer (internal)
+Student Needs: Efficient workload management, improved understanding of key concepts, ability to prioritize tasks.
+Instructor Needs: Potential tool to enhance student learning and engagement, ability to share workload materials securely.
+Developer Needs: Clearly defined requirements to guide development, access to necessary resources and tools.
+3.2.2. User Requirements Elicitation
+Techniques: User interviews , surveys distributed to student body.
+Focus: Understand current student workload management practices (e.g., note-taking, highlighting), identify pain points and desired functionalities in a summarization app (e.g., specific content types supported, customization options).
+3.2.3. System Functional and Non-Functional Requirements
+Functional Requirements:
+Upload student workload materials (e.g., lecture notes, assignments, reading lists).
+Generate concise and informative summaries of uploaded materials.
+Generate a point only summary of uploaded material for easy remembrance. 
+Allow users to generate mini summaries and mini quizzes by highlighting points in the point only summary.
+Allow a text to speech for audio readers.
+Allow users to save and organize summaries and quizes for future reference.
+Generate quizzes, flashcards to help student understand the material better.
+Allow sharing of summaries and quizzes with other users
+Non-Functional Requirements:
+User Interface (UI) should be intuitive and easy to navigate.
+App should function efficiently on various devices (smartphones, tablets, pc).
+Summarization process should be fast and reliable.
+System should be secure and protect user data privacy.
+3.3. System Design
+This phase translates the requirements into a technical blueprint for the app.
+3.3.1. System Architecture Overview
+The app will employ a client-server architecture.
+Client-Side (Web App): Handles user interactions, displays summaries, and allows for basic data processing (e.g., user authentication, formatting uploads).
+Server-Side: Houses the Api connection to a trained AI summarization model, generate a prompt to extract accurate summarization from AI summarization model, performs computationally intensive tasks (e.g., text summarization), and manages data storage (e.g., user data, workload materials, summaries).
+Client-Server Communication: Secure API (Application Programming Interface) will facilitate secure data exchange between client and server.
+3.3.2. Data Model Design
+The app will utilize a relational database to store and manage data.
+Entities: Users, Workload Materials (with attributes like type, subject, content), Summaries (with attributes like source material, generated summary, creation date), Quiz.
+Relationships: Users can upload Workload Materials. Workload Materials can have multiple associated Summaries.
+3.3.3. User Interface Design
+The UI will prioritize user experience and ease of use.
+Clear and concise layout: Simple menus, intuitive navigation buttons.
+Focus on core functionalities: Upload, summarize, save, and organize summaries.
+Customization options: Allow users to adjust summary length and detail level.
+3.3.4. AI Model Integration Strategy
+The chosen Transformer-based AI summarization model will be integrated using a pre-trained and optimized model accessible through an API.
+Client-side processing: User uploads workload materials are pre-processed (e.g., removing irrelevant information) on the client-side before sending them to the server.
+Server-side integration: The pre-processed data is sent to the server-side API, which interacts with the AI model to generate summaries.
+Summary retrieval: Generated summaries are sent back to the client-side and displayed within the app.
+3.4. Evaluation Criteria Definition
+This section defines how the app's success will be measured.
+3.4.1. Metrics for Evaluating System Performance
+AI Model Performance: ROUGE score to assess the model's ability to capture key information and generate coherent summaries.
+App Usability: User satisfaction surveys and task completion time to evaluate user experience and efficiency in interacting with the app.
+3.4.2. Evaluation Methods and Techniques
+User Study:
+Recruit a representative group of students to participate in the user study.
+Conduct a pre-study survey to understand their current workload management strategies and expectations for the app.
+Provide participants with a set of workload materials and ask them to:
+Summarize the materials on their own (baseline performance).
+Use the app to generate summaries of the materials.
+Complete a post-study survey to evaluate the app's effectiveness, ease of use, and overall satisfaction.
+Analyze user feedback and performance data to identify areas for improvement.
+3.5. Ethical and Legal Considerations
+This section addresses ethical and legal implications of developing the app.
+3.5.1. Ethical Guidelines Compliance
+Transparency: The app will clearly disclose that summaries are generated by an AI model and may not be perfect.
+Fairness: The AI model will be trained on a diverse dataset of student workload materials to minimize bias in summaries.
+Accountability: Developers will take responsibility for the app's functionality and address any potential issues promptly.
+3.5.2. Privacy and Data Protection Measures
+Data Anonymization: All student data collected during the user study (e.g., workload materials, summaries) will be anonymized before analysis.
+Informed Consent: Participants in the user study will provide informed consent regarding data collection and usage.
+Data Security: Secure storage practices will be implemented to protect user data from unauthorized access.
+3.6 Conclusion
+This chapter outlined the research methodology for developing and evaluating the AI summarization app. The SAD approach ensured a systematic analysis of user needs, system design, and evaluation criteria. The user study will provide valuable insights into the app's effectiveness and identify areas for further improvement. By adhering to ethical guidelines and data protection measures, the project aims to create a responsible and user-centric tool to assist students in managing their workload.
+

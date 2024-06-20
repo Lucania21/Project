@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proj5.0 - Files</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Animation for file boxes */
+        .file-box {
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Proj5.0</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="files">Files</a>
+                        <a class="dropdown-item" href="summaries">Summaries</a>
+                        <a class="dropdown-item" href="quizzes">Quizzes</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="donate">Donate</a></li>
+                <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content for Files page -->
+    <div class="container mt-5">
+        <div class="section">
+            <h1 class="mb-4">Files</h1>
+            <div class="row">
+                <!-- Example File Box -->
+                {% for file in files %}
+                <div class="col-md-4">
+                    <div class="card file-box">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: rgb(0, 6, 10);">{{file.name}}</h5>
+                            <p class="card-text" style="color: rgb(7, 7, 7);">Owner: {{file.user}}</p>
+                            <p class="card-text" style="color: rgb(5, 5, 5);">Date Created: {{file.date}}</p>
+                            <button class="btn btn-danger delete-button" onclick="deleteFile(event, '{{file.id}}')">Delete</button>
+                            <button class="btn btn-primary create-quiz-button" onclick="createQuiz(event, '{{file.id}}')">Create Quiz</button>
+                            <button class="btn btn-primary create-summary-button" onclick="createSummary(event, '{{file.id}}')">Create Summary</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Upload New File Box -->
+                <div class="col-md-4">
+                    <div class="card upload-box" onclick="uploadNewFile()">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Upload New File</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><br><br></p>
+
+    <footer class="bg-dark text-white text-center py-3">
+        &copy; 2024 Proj5.0. All rights reserved.
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function deleteFile(event, fileId) {
+            event.stopPropagation(); // Prevent the parent click event from triggering
+            fetch(`/delete_file/${fileId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting file:', error);
+            });
+        }
+
+        function uploadNewFile() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.style.display = 'none';
+
+    fileInput.onchange = function() {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('category', 'your_category'); // Add other form data if needed
+
+        fetch('/upload_new_file', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('File uploaded and processed:', data);
+                location.reload();
+            } else {
+                console.error('Error:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
+    };
+
+    document.body.appendChild(fileInput);
+    fileInput.click();
+}
+
+
+        function viewFile(fileId) {
+            window.location.href = `/file/${fileId}`;
+        }
+
+        function createQuiz(event, fileId) {
+            event.stopPropagation(); // Prevent the parent click event from triggering
+            window.location.href = `/create_quiz?file_id=${fileId}`;
+        }
+
+        function createSummary(event, fileId) {
+            event.stopPropagation(); // Prevent the parent click event from triggering
+            const summaryType = prompt("Enter summary type (general(1) or point_based(2)):");
+            if (summaryType === '1' || summaryType === '2') {
+                window.location.href = `/create_summary?file_id=${fileId}&type=${summaryType}`;
+            } else {
+                alert(" Invalid summary type. Please enter 'general' or 'point_based'.");
+            }
+        }
+    </script>
+</body>
+</html>
